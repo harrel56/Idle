@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Idle</string>
+
+    <string name="dummy_button">Dummy Button</string>
+    <string name="splash_content">SPLASH\nSCREEN</string>
+
+    <string-array name="example_array">
+        <item>Shuttle Badminton</item>
+        <item>Tennis</item>
+        <item>FootBall</item>
+        <item>Basket Ball</item>
+        <item>Table Tennis</item>
+        <item>Chess</item>
+        <item>Hockey</item>
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+</resources>

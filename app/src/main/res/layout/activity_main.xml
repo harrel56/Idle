@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="harrel.idle.MainActivity">
+
+    <FrameLayout
+        android:id="@+id/upperLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="0.5">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/forest" />
+
+        <harrel.idle.AnimatedImageButton
+            android:id="@+id/imgButton"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@mipmap/ic_launcher_round"
+            android:scaleType="fitCenter"
+            android:background="@android:color/transparent" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="top"
+            android:padding="10dp"
+            android:theme="@style/TransparentTheme">
+
+            <harrel.idle.FontTextView
+                android:id="@+id/textViewGoldLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="Zeni" />
+
+            <harrel.idle.FontTextView
+                android:id="@+id/textViewGold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textViewGoldLabel" />
+
+            <harrel.idle.FontTextView
+                android:id="@+id/textViewGpsLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/textViewGold"
+                android:text="Zeni/s"/>
+
+            <harrel.idle.FontTextView
+                android:id="@+id/textViewGps"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@id/textViewGpsLabel"
+                android:text="0.00"/>
+
+            <harrel.idle.FontTextView
+                android:id="@+id/textViewPowerLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="Power level"/>
+
+            <harrel.idle.FontTextView
+                android:id="@+id/textViewPower"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/textViewPowerLabel"
+                android:text="10.00"/>
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:padding="20dp"
+            android:theme="@style/TransparentTheme">
+
+            <ImageButton
+                android:id="@+id/optionsButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:paddingTop="8dp"
+                android:paddingBottom="4dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:src="@drawable/icon_options"
+                android:background="@drawable/button_options_selector"/>
+        </RelativeLayout>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/bottomLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/upperLayout"
+        android:orientation="vertical"
+        android:layout_weight="0.5"
+        android:layout_marginTop="-12dp"
+        android:theme="@style/TransparentTheme">
+
+
+
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="42dp"
+            android:layout_gravity="bottom"
+            android:overScrollMode="never"
+
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+        <harrel.idle.FontTabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_above="@id/container"
+            android:theme="@style/TransparentTheme"
+            android:layout_gravity="top"
+            app:tabBackground="@drawable/button_selector"
+            app:tabIndicatorHeight="0dp"
+            app:tabTextAppearance="@style/TabTextAppeareance"
+            />
+
+
+
+    </FrameLayout>
+
+</LinearLayout>

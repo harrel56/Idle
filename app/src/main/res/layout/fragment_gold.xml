@@ -1,0 +1,26 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="20dp"
+    android:paddingBottom="20dp"
+    android:paddingLeft="20dp"
+    android:paddingRight="20dp"
+    android:theme="@style/TabTheme"
+
+    tools:context="harrel.idle.GoldFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <ListView
+        android:id="@id/android:list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/example_array"
+        android:theme="@style/TransparentTheme"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        android:requiresFadingEdge="vertical"
+        android:fadingEdgeLength="25dp"/>
+
+
+</FrameLayout>

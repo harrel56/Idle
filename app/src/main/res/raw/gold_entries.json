@@ -1,0 +1,13 @@
+{ "goldEntries" : [
+  {"icon" : "", "name" : "Kid trainee", "cost" : "10", "powerReq" : "10", "goldPerSec" : "1" },
+  {"icon" : "", "name" : "Teenager trainee", "cost" : "100", "powerReq" : "100", "goldPerSec" : "10" },
+  {"icon" : "", "name" : "Adult trainee", "cost" : "1000", "powerReq" : "1000", "goldPerSec" : "100" },
+  {"icon" : "", "name" : "Gym", "cost" : "10000", "powerReq" : "10000", "goldPerSec" : "1000" },
+  {"icon" : "", "name" : "Gym1", "cost" : "10000", "powerReq" : "10000", "goldPerSec" : "1000" },
+  {"icon" : "", "name" : "Gym2", "cost" : "10000", "powerReq" : "10000", "goldPerSec" : "1000" },
+  {"icon" : "", "name" : "Gym3", "cost" : "10000", "powerReq" : "10000", "goldPerSec" : "1000" },
+  {"icon" : "", "name" : "Gym4", "cost" : "10000", "powerReq" : "10000", "goldPerSec" : "1000" },
+  {"icon" : "", "name" : "Gym5", "cost" : "10000", "powerReq" : "10000", "goldPerSec" : "1000" },
+  {"icon" : "", "name" : "Gym6", "cost" : "10000", "powerReq" : "10000", "goldPerSec" : "1000" },
+  {"icon" : "", "name" : "Gym7", "cost" : "10000", "powerReq" : "10000", "goldPerSec" : "1000" }
+]}
