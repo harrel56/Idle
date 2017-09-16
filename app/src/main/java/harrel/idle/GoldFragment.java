@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,7 +99,7 @@ public class GoldFragment extends ListFragment implements OnGoldDataChangeListen
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(values[position].isAffordable()) {
+                if(view.isEnabled()) {
                     mParent.addGoldCount(values[position].getCost().negate());
                     values[position].addCount(BigDecimal.ONE);
                     if(GoldEntry.lastOwnedPosition < position) {
@@ -113,6 +112,7 @@ public class GoldFragment extends ListFragment implements OnGoldDataChangeListen
                 }
             }
         });
+        mParent.addGoldCount(BigDecimal.ZERO);
     }
 
     public void onGoldDataChange(int position){
@@ -129,19 +129,28 @@ public class GoldFragment extends ListFragment implements OnGoldDataChangeListen
 
         FontTextView cost = (FontTextView) view.findViewById(R.id.cost);
         cost.setText("Cost: " + FontTextView.valueToString(values[position].getCost()));
-        if (!values[position].isAffordable())
+        if (!values[position].isAffordableGold())
             cost.setTextColor(Color.RED);
         else
             cost.setTextColor(getResources().getColor(R.color.colorFont));
 
+        FontTextView req = (FontTextView) view.findViewById(R.id.powerReq);
+        req.setText("Power required: " + FontTextView.valueToString(values[position].getPowerReq()));
+        if (!values[position].isAffordablePower())
+            req.setTextColor(Color.RED);
+        else
+            req.setTextColor(getResources().getColor(R.color.colorFont));
+
         FontTextView owned = (FontTextView) view.findViewById(R.id.owned);
         owned.setText("Owned: " + values[position].getCount());
 
-        view.setEnabled(values[position].isAffordable());
-        if(values[position].isAffordable())
+        if(values[position].isAffordableGold() && values[position].isAffordablePower()) {
             view.setAlpha(1f);
-        else
+            view.setEnabled(true);
+        }else {
             view.setAlpha(0.65f);
+            view.setEnabled(false);
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -196,14 +205,21 @@ public class GoldFragment extends ListFragment implements OnGoldDataChangeListen
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View rowView = inflater.inflate(R.layout.row_gold, parent, false);
+
+            //Log.d("getView POS", "pos: " + position);
+            View rowView;
+            if(convertView == null) {
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                rowView = inflater.inflate(R.layout.row_gold, parent, false);
+            }else{
+                rowView = convertView;
+            }
             FontTextView textName = (FontTextView)rowView.findViewById(R.id.name);
             textName.setText(adapterValues[position].getName());
             //FontTextView textCost = (FontTextView)rowView.findViewById(R.id.cost);
             //textCost.setText("Cost: " + FontTextView.goldToString(adapterValues[position].getCost()));
-            FontTextView textPower = (FontTextView)rowView.findViewById(R.id.powerReq);
-            textPower.setText("Required power: " + FontTextView.valueToString(adapterValues[position].getPowerReq()));
+//            FontTextView textPower = (FontTextView)rowView.findViewById(R.id.powerReq);
+//            textPower.setText("Required power: " + FontTextView.valueToString(adapterValues[position].getPowerReq()));
             FontTextView textGps = (FontTextView)rowView.findViewById(R.id.goldPerSec);
             textGps.setText("Zeni/s: " + FontTextView.valueToString(adapterValues[position].getGoldPerSec()));
 

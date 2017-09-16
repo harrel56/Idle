@@ -1,45 +1,27 @@
 package harrel.idle;
 
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.app.Dialog;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Handler;
-import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.MotionEvent;
-import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -54,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
     private FrameLayout mUpperLayout;
     private Handler mHandler = new Handler();
 
-    private Timer mTimer = new Timer();
+    private Timer mGoldTimer = new Timer();
+    private Timer mPowerTimer = new Timer();
 
     //Variables for gold/lvl count
     private BigDecimal goldCount = BigDecimal.ZERO;
@@ -89,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         fetchPowerData();
         fetchGoldData();
 
-        mTimer.scheduleAtFixedRate(new TimerTask() {
+        mGoldTimer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 mHandler.post(new Runnable() {
@@ -100,23 +83,6 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         }, 0, REFRESH_TIME);
-
-        mTimer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        if(currentTrainingIndex != -1){
-                            PowerEntry tmp = powerEntries[currentTrainingIndex];
-                            addPowerCount(tmp.getPowerPerSec());
-                            tmp.setTimeDone(tmp.getTimeDone() + 1);
-                            mPowerListener.onPowerDataChange(currentTrainingIndex, (int)(tmp.getTimeDone() / tmp.getTime() * 100));
-                        }
-                    }
-                });
-            }
-        }, 0, 1000);
 
         mMyPagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
 
@@ -229,12 +195,11 @@ public class MainActivity extends AppCompatActivity {
 
         for(int i = 0; i < goldEntries.length; i++){
             boolean affordable = goldEntries[i].getCost().compareTo(goldCount) <= 0;
-            if(goldEntries[i].isAffordable() ^ affordable){
-                goldEntries[i].setAffordable(affordable);
+            if(goldEntries[i].isAffordableGold() ^ affordable){
+                goldEntries[i].setAffordableGold(affordable);
                 if(mGoldListener != null)
                     mGoldListener.onGoldDataChange(i);
             }
-
         }
     }
 
@@ -251,6 +216,25 @@ public class MainActivity extends AppCompatActivity {
         LayoutParams params = new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         text.setLayoutParams(params);
         mUpperLayout.addView(text);
+
+        for(int i = 0; i < goldEntries.length; i++){
+            boolean affordable = goldEntries[i].getPowerReq().compareTo(powerCount) <= 0;
+            if(goldEntries[i].isAffordablePower() ^ affordable){
+                goldEntries[i].setAffordablePower(affordable);
+                if(mGoldListener != null)
+                    mGoldListener.onGoldDataChange(i);
+            }
+        }
+
+        for(int i = 0; i < powerEntries.length; i++){
+            boolean affordable = powerEntries[i].getPowerReq().compareTo(powerCount) <= 0;
+            if(powerEntries[i].isAffordable() ^ affordable){
+                PowerEntry.lastAvailablePosition = i;
+                powerEntries[i].setAffordable(affordable);
+                if(mPowerListener != null)
+                    mPowerListener.onPowerDataChange(i);
+            }
+        }
     }
 
     private void fetchGoldData(){
@@ -327,6 +311,29 @@ public class MainActivity extends AppCompatActivity {
 
     public void setCurrentTrainingIndex(int index){
         currentTrainingIndex = index;
+        if(index >= 0) {
+            mPowerTimer = new Timer();
+            mPowerTimer.scheduleAtFixedRate(new TimerTask() {
+                @Override
+                public void run() {
+                    mHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (currentTrainingIndex != -1) {
+                                PowerEntry tmp = powerEntries[currentTrainingIndex];
+                                addPowerCount(tmp.getPowerPerSec());
+                                tmp.setTimeDone(tmp.getTimeDone() + 1);
+                                mPowerListener.onPowerTick(currentTrainingIndex, (int) (tmp.getTimeDone() / tmp.getTime() * 100));
+                            }
+                        }
+                    });
+                }
+            }, 0, 1000);
+        }
+        else {
+            mPowerTimer.cancel();
+            mPowerTimer.purge();
+        }
     }
 
     public int getCurrentTrainingIndex(){

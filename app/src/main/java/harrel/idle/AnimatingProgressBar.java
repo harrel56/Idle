@@ -6,6 +6,7 @@ import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Interpolator;
@@ -19,6 +20,7 @@ public class AnimatingProgressBar extends ProgressBar {
     private ValueAnimator animator;
     private ValueAnimator animatorSecondary;
     private boolean animate = true;
+    private Runnable endAction;
 
     public AnimatingProgressBar(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -47,6 +49,9 @@ public class AnimatingProgressBar extends ProgressBar {
     public synchronized void setProgress(int progress) {
         progress *= 10;
         if (!animate) {
+            if(animator != null)
+                animator.cancel();
+            Log.d("PROG", this.toString() + ": " + progress);
             super.setProgress(progress);
             return;
         }
@@ -66,11 +71,8 @@ public class AnimatingProgressBar extends ProgressBar {
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     super.onAnimationEnd(animation);
-                    if(getProgress() >= getMax()) {
-                        animate = false;
-                        setProgress(0);
-                        animate = true;
-                    }
+                    if(endAction != null && getProgress() >= getMax())
+                        endAction.run();
                 }
             });
         } else
@@ -112,5 +114,7 @@ public class AnimatingProgressBar extends ProgressBar {
         if (animatorSecondary != null)
             animatorSecondary.cancel();
     }
+
+    public void setEndAction(Runnable r){endAction = r;}
 
 }

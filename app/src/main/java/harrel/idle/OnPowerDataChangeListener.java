@@ -5,5 +5,6 @@ package harrel.idle;
  */
 
 public interface OnPowerDataChangeListener {
-    void onPowerDataChange(int position, int progress);
+    void onPowerTick(int position, int progress);
+    void onPowerDataChange(int position);
 }

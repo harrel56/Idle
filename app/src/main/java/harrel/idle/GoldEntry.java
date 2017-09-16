@@ -23,7 +23,8 @@ public class GoldEntry {
     public static BigDecimal[] GROW_RATES;
     public static int lastOwnedPosition = -1;
 
-    private boolean affordable;
+    private boolean affordableGold;
+    private boolean affordablePower;
 
     public GoldEntry(JSONObject json) throws JSONException {
         icon = null;
@@ -33,7 +34,8 @@ public class GoldEntry {
         powerReq = new BigDecimal(json.getString("powerReq"));
         count = BigDecimal.ZERO;
         goldPerSecondCount = BigDecimal.ZERO;
-        affordable = false;
+        affordableGold = false;
+        affordablePower = false;
     }
 
     public String toString(){
@@ -73,11 +75,19 @@ public class GoldEntry {
         goldPerSecondCount = this.count.multiply(goldPerSec);
     }
 
-    public boolean isAffordable() {
-        return affordable;
+    public boolean isAffordableGold() {
+        return affordableGold;
     }
 
-    public void setAffordable(boolean affordable) {
-        this.affordable = affordable;
+    public void setAffordableGold(boolean affordableGold) {
+        this.affordableGold = affordableGold;
+    }
+
+    public boolean isAffordablePower() {
+        return affordablePower;
+    }
+
+    public void setAffordablePower(boolean affordablePower) {
+        this.affordablePower = affordablePower;
     }
 }

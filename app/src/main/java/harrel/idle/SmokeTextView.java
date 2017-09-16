@@ -41,7 +41,6 @@ public class SmokeTextView extends FontTextView {
 
         setX(x - w / 2);
         setY(y - h * 3);
-        Log.d("SMOKE", "w: " + getX() + ", h: " + getY());
         super.onSizeChanged(w, h, oldw, oldh);
         startSmoke();
     }
